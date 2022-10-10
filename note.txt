@@ -1,0 +1,7 @@
+Khi làm việc với State 
+
+- State trong 1 component => Chỉ sử dụng trong nội bộ component
+- State sử dụng cho nhiều component => Global State
++ Redux
++ Context API 
++ React Query

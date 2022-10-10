@@ -1,0 +1,17 @@
+.todo-item{
+    padding: 15px 0;
+    border-bottom: 1px solid #ccc;
+    margin: 15px 0;
+}
+
+.todo-item .remove{
+    float: right;
+    color: red;
+    cursor: pointer;
+}
+
+.todo-item.completed input+span{
+    text-decoration: line-through;
+    color: #999;
+    font-style: italic;
+}
