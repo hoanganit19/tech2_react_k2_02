@@ -5,15 +5,13 @@ import ProviderState from '../../Context/ProviderState';
 const { SERVER_API } = config;
 const todoApi = SERVER_API + "/todos";
 
-const state = {
-    doLists: [],
-    isLoading: true
-}
-
-const getTodos = async () => {
+export const getTodos = async (store) => {
   const response = await fetch(todoApi);
   const todos = await response.json();
-  console.log(todos);
+  store.dispatch({
+    doLists: todos,
+    isLoading: false
+  })
 //   this.setState({
 //     doLists: todos,
 //     isLoading: false,
@@ -22,7 +20,7 @@ const getTodos = async () => {
 
 };
 
-const addToDo = async (todo) => {
+export const addToDo = async (todo, store) => {
   const response = await fetch(todoApi, {
     method: "POST",
     headers: {
@@ -34,13 +32,13 @@ const addToDo = async (todo) => {
   if (response.ok) {
     //this.getTodos();
     const data = await response.json();
-    this.setState({
-      doLists: this.state.doLists.concat(data),
-    });
+    store.dispatch({
+        doLists: this.state.doLists.concat(data)
+    })
   }
 };
 
-const removeToDo = async (id) => {
+export const removeToDo = async (id, store) => {
   if (window.confirm("Bạn có chắc chắn")) {
     const response = await fetch(todoApi + "/" + id, {
       method: "DELETE",
@@ -48,7 +46,7 @@ const removeToDo = async (id) => {
 
     if (response.ok) {
       //this.getTodos();
-      const doLists = [...this.state.doLists];
+      const doLists = [...store.data.doLists];
 
       const index = doLists
         .map((x) => {
@@ -58,14 +56,14 @@ const removeToDo = async (id) => {
 
       doLists.splice(index, 1);
 
-      this.setState({
-        doLists: doLists,
-      });
+     store.dispatch({
+        doLists: doLists
+     })
     }
   }
 };
 
-const completeToDo = async (id, checkedStatus) => {
+export const completeToDo = async (id, checkedStatus, store) => {
   // const doLists = [...this.state.doLists];
   // const index = doLists
   //   .map((x) => {
@@ -89,11 +87,11 @@ const completeToDo = async (id, checkedStatus) => {
   });
 
   if (response.ok) {
-    this.getTodos();
+    getTodos(store);
   }
 };
 
-const filterToDos = async (params) => {
+export const filterToDos = async (params) => {
   const queryString = new URLSearchParams(params).toString();
 
   this.setState({
@@ -108,13 +106,3 @@ const filterToDos = async (params) => {
   });
 };
 
-const toDoSlice = {
-    getTodos: getTodos,
-    addToDo: addToDo,
-    removeToDo: removeToDo,
-    completeToDo: completeToDo,
-    filterToDos: filterToDos,
-    state: state
-}
-
-export default toDoSlice;

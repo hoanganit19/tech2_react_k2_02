@@ -1,34 +1,14 @@
 {
   "todos": [
     {
-      "name": "học react",
-      "isCompleted": false,
-      "id": 5
-    },
-    {
       "name": "học javascript",
       "isCompleted": true,
       "id": 6
     },
     {
-      "name": "học php",
-      "isCompleted": false,
-      "id": 7
-    },
-    {
-      "name": "học front-end",
-      "isCompleted": true,
-      "id": 8
-    },
-    {
       "name": "công việc 1",
-      "isCompleted": false,
-      "id": 9
-    },
-    {
-      "name": "công việc 2",
       "isCompleted": true,
-      "id": 10
+      "id": 9
     },
     {
       "name": "công việc 3",

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import getContext from "../../Context/getContext";
-import toDoSlice from "./toDoSlice";
+import {getTodos, removeToDo, completeToDo} from "./toDoSlice";
 
 export class ShowToDo extends Component {
   constructor(props) {
@@ -14,11 +14,11 @@ export class ShowToDo extends Component {
   
     //getTodos();
 
-    //toDoSlice.getTodos();
+    getTodos(this.props.store);
 
-    this.props.store.dispatch({
-      isLoading: false
-    })
+    // this.props.store.dispatch({
+    //   isLoading: false
+    // })
   }
 
   render() {
@@ -48,7 +48,7 @@ export class ShowToDo extends Component {
                   type="checkbox"
                   className="me-2"
                   onChange={(e) => {
-                    //completeToDo(id, e.target.checked);
+                    completeToDo(id, e.target.checked, this.props.store);
                   }}
                   {...checked}
                 />
@@ -56,7 +56,7 @@ export class ShowToDo extends Component {
                 <span
                   className="remove"
                   onClick={() => {
-                   // removeToDo(id);
+                   removeToDo(id, this.props.store);
                   }}
                 >
                   &times;

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {ProviderContext} from "./ProviderState";
 
 const getContext = (ParentComponent) => {
+    
     return class extends Component{
         constructor(props){
             super(props);
@@ -11,7 +12,9 @@ const getContext = (ParentComponent) => {
             return (
                 <ProviderContext.Consumer>
                     {
-                        dataContext => <ParentComponent store={dataContext} {...this.props}/>
+                        dataContext => {
+                            return <ParentComponent store={dataContext} {...this.props}/>
+                        }
                     }
                 </ProviderContext.Consumer>
             )
