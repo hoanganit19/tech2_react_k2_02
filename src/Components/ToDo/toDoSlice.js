@@ -1,6 +1,5 @@
-import config from '../../Config.json';
-import ProviderState from '../../Context/ProviderState';
-
+import config from "../../Config.json";
+import ProviderState from "../../Context/ProviderState";
 
 const { SERVER_API } = config;
 const todoApi = SERVER_API + "/todos";
@@ -10,14 +9,13 @@ export const getTodos = async (store) => {
   const todos = await response.json();
   store.dispatch({
     doLists: todos,
-    isLoading: false
-  })
-//   this.setState({
-//     doLists: todos,
-//     isLoading: false,
-//   });
-    //state.doLists = todos; 
-
+    isLoading: false,
+  });
+  //   this.setState({
+  //     doLists: todos,
+  //     isLoading: false,
+  //   });
+  //state.doLists = todos;
 };
 
 export const addToDo = async (todo, store) => {
@@ -33,8 +31,8 @@ export const addToDo = async (todo, store) => {
     //this.getTodos();
     const data = await response.json();
     store.dispatch({
-        doLists: this.state.doLists.concat(data)
-    })
+      doLists: store.data.doLists.concat(data),
+    });
   }
 };
 
@@ -56,9 +54,9 @@ export const removeToDo = async (id, store) => {
 
       doLists.splice(index, 1);
 
-     store.dispatch({
-        doLists: doLists
-     })
+      store.dispatch({
+        doLists: doLists,
+      });
     }
   }
 };
@@ -91,18 +89,24 @@ export const completeToDo = async (id, checkedStatus, store) => {
   }
 };
 
-export const filterToDos = async (params) => {
+export const filterToDos = async (params, store) => {
   const queryString = new URLSearchParams(params).toString();
 
-  this.setState({
+  //   this.setState({
+  //     isLoading: true,
+  //   });
+  store.dispatch({
     isLoading: true,
   });
 
   const response = await fetch(todoApi + "?" + queryString);
   const data = await response.json();
-  this.setState({
+  //   this.setState({
+  //     doLists: data,
+  //     isLoading: false,
+  //   });
+  store.dispatch({
     doLists: data,
     isLoading: false,
   });
 };
-

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import getContext from '../../Context/getContext';
 import {v4 as uniqueId} from 'uuid';
+import { addToDo as addToDoItem } from './toDoSlice';
 
 export class AddToDo extends Component {
 
@@ -10,7 +11,6 @@ export class AddToDo extends Component {
     this.state = {
       jobName: ''
     }
-
     
   }
 
@@ -19,14 +19,14 @@ export class AddToDo extends Component {
     const {jobName} = this.state;
     //console.log(jobName);
 
-    const {addTodo} = this.props.store;
+    //const {addTodo} = this.props.store;
 
     if (jobName!==''){
-      addTodo({
+      addToDoItem({
        // id: uniqueId(),
         name: jobName,
         isCompleted: false
-      });
+      }, this.props.store);
       
     }else{
       alert('Vui lòng nhập tên công việc');

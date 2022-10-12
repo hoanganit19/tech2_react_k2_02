@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import getContext from "../../Context/getContext";
+import { filterToDos } from "./toDoSlice";
 
 export class FilterToDo extends Component {
   constructor(props) {
@@ -27,8 +28,8 @@ export class FilterToDo extends Component {
     } else {
       this.params.q = e.target.value;
     }
-    const { filterToDos } = this.props.store;
-    filterToDos(this.params);
+    //onst { filterToDos } = this.props.store;
+    filterToDos(this.params, this.props.store);
   };
 
   render() {
