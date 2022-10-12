@@ -1,69 +1,134 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import config from "../Config.json";
 
 export const ProviderContext = React.createContext();
 
-class ProviderState extends Component {
+const { SERVER_API } = config;
 
-  constructor(props){
+class ProviderState extends Component {
+  constructor(props) {
     super(props);
     this.state = {
-      doLists: [
-        
-      ]
-    }
+      doLists: [],
+      isLoading: true,
+    };
+
+    this.todoApi = SERVER_API + "/todos";
   }
 
-  addToDo = (todo) => {
+  getTodos = async () => {
+    const response = await fetch(this.todoApi);
+    const todos = await response.json();
     this.setState({
-      doLists: this.state.doLists.concat(todo)
-    })
-  }
+      doLists: todos,
+      isLoading: false,
+    });
+  };
 
-  removeToDo = (id) => {
-    if (window.confirm('Bạn có chắc chắn')){
+  addToDo = async (todo) => {
+    const response = await fetch(this.todoApi, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todo),
+    });
 
-      const doLists = [...this.state.doLists];
-
-      const index = doLists.map(x => {
-        return x.id;
-      }).indexOf(id);
-      
-      doLists.splice(index, 1);
-
+    if (response.ok) {
+      //this.getTodos();
+      const data = await response.json();
       this.setState({
-        doLists: doLists
-      })
+        doLists: this.state.doLists.concat(data),
+      });
     }
-  }
+  };
 
-  completeToDo = (id, checkedStatus) => {
-    const doLists = [...this.state.doLists];
-    const index = doLists.map(x => {
-      return x.id;
-    }).indexOf(id);
-    
-    doLists[index].isCompleted = checkedStatus;
+  removeToDo = async (id) => {
+    if (window.confirm("Bạn có chắc chắn")) {
+      
+      const response =  await fetch(this.todoApi+'/'+id, {
+        method: "DELETE"
+      });
 
+      if (response.ok){
+        //this.getTodos();
+        const doLists = [...this.state.doLists];
+
+        const index = doLists
+          .map((x) => {
+            return x.id;
+          })
+          .indexOf(id);
+
+        doLists.splice(index, 1);
+
+        this.setState({
+          doLists: doLists,
+        });
+      }
+    }
+  };
+
+  completeToDo = async (id, checkedStatus) => {
+    // const doLists = [...this.state.doLists];
+    // const index = doLists
+    //   .map((x) => {
+    //     return x.id;
+    //   })
+    //   .indexOf(id);
+
+    // doLists[index].isCompleted = checkedStatus;
+
+    // this.setState({
+    //   doLists: doLists,
+    // });
+    const response = await fetch(this.todoApi+'/'+id, {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        isCompleted: checkedStatus
+      })
+    });
+
+    if (response.ok){
+      this.getTodos();
+    }
+
+  };
+
+  filterToDos = async (keyword) => {
     this.setState({
-      doLists: doLists
+      isLoading: true
+    })
+    
+    const response = await fetch(this.todoApi+'?q='+keyword);
+    const data = await response.json();
+    this.setState({
+      doLists: data,
+      isLoading: false
     })
   }
 
   render() {
-
-    const {children} = this.props;
+    const { children } = this.props;
 
     return (
-      <ProviderContext.Provider value={{
-        data: this.state,
-        addTodo: this.addToDo,
-        removeToDo: this.removeToDo,
-        completeToDo: this.completeToDo
-      }}>
-          {children}
+      <ProviderContext.Provider
+        value={{
+          data: this.state,
+          addTodo: this.addToDo,
+          removeToDo: this.removeToDo,
+          completeToDo: this.completeToDo,
+          getTodos: this.getTodos,
+          filterToDos: this.filterToDos
+        }}
+      >
+        {children}
       </ProviderContext.Provider>
-    )
+    );
   }
 }
 
-export default ProviderState
+export default ProviderState;

@@ -23,7 +23,7 @@ export class AddToDo extends Component {
 
     if (jobName!==''){
       addTodo({
-        id: uniqueId(),
+       // id: uniqueId(),
         name: jobName,
         isCompleted: false
       });
