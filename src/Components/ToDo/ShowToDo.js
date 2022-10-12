@@ -1,21 +1,30 @@
 import React, { Component } from "react";
 import getContext from "../../Context/getContext";
+import toDoSlice from "./toDoSlice";
 
 export class ShowToDo extends Component {
   constructor(props) {
     super(props);
+    
   }
 
   componentDidMount = () => {
-    const {getTodos} = this.props.store;
+    //const {getTodos} = this.props.store.globalSlice.toDoSlice;
+    //console.log(this.props.store.globalSlice);
   
-    getTodos();
+    //getTodos();
+
+    //toDoSlice.getTodos();
+
+    this.props.store.dispatch({
+      isLoading: false
+    })
   }
 
   render() {
     const { doLists, isLoading } = this.props.store.data;
 
-    const { removeToDo, completeToDo } = this.props.store;
+    //const { removeToDo, completeToDo } = this.props.store.globalSlice;
 
     return (
       <div className="todo-lists">
@@ -39,7 +48,7 @@ export class ShowToDo extends Component {
                   type="checkbox"
                   className="me-2"
                   onChange={(e) => {
-                    completeToDo(id, e.target.checked);
+                    //completeToDo(id, e.target.checked);
                   }}
                   {...checked}
                 />
@@ -47,7 +56,7 @@ export class ShowToDo extends Component {
                 <span
                   className="remove"
                   onClick={() => {
-                    removeToDo(id);
+                   // removeToDo(id);
                   }}
                 >
                   &times;
